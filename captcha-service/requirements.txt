@@ -1,0 +1,6 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+Pillow>=10.4.0
+requests
+numpy>=2.1.0
+opencv-python-headless>=4.10.0

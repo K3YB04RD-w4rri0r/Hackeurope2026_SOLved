@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acme Corp — Sign Up</title>
+  <style>
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 20px;
+    }
+
+    /* ─── Card ─── */
+    .signup-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 36px 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.15);
+      max-width: 440px;
+      width: 100%;
+    }
+
+    .signup-card h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .signup-card .subtitle {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 28px;
+    }
+
+    /* ─── Form fields ─── */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #333;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .form-group input:focus {
+      border-color: #667eea;
+    }
+
+    /* ─── CAPTCHA container ─── */
+    .captcha-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 24px 0;
+      gap: 10px;
+    }
+
+    .captcha-mode {
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      color: #444;
+      font-weight: 600;
+    }
+
+    .captcha-mode select {
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      background: #fff;
+      color: #333;
+    }
+
+    /* ─── Submit button ─── */
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s, transform .1s;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .submit-btn.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .submit-btn.enabled:hover {
+      opacity: 0.9;
+    }
+
+    .submit-btn.enabled:active {
+      transform: scale(0.98);
+    }
+
+    .btn-hint {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 8px;
+    }
+
+    .btn-hint.hidden { display: none; }
+
+    /* ─── Success message ─── */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    .success-msg.visible { display: block; }
+
+    .success-msg .checkmark {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    .success-msg h2 {
+      font-size: 22px;
+      color: #16a34a;
+      margin-bottom: 4px;
+    }
+    .success-msg p {
+      font-size: 14px;
+      color: #888;
+    }
+
+    /* ─── Footer ─── */
+    .page-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,.6);
+    }
+    .page-footer a {
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <div class="signup-card">
+    <!-- Form -->
+    <div id="formSection">
+      <h1>Create an Account</h1>
+      <p class="subtitle">Join Acme Corp today — it's free.</p>
+
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Jane Doe" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="jane@example.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" />
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           CAPTCHA WIDGET — this is the only integration code!
+           ═══════════════════════════════════════════ -->
+      <div class="captcha-section">
+        <label class="captcha-mode" for="captchaMode">
+          <span>Captcha Type</span>
+          <select id="captchaMode">
+            <option value="image">Picture</option>
+            <option value="video">Video</option>
+          </select>
+        </label>
+        <div id="signup-captcha"></div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn">Sign Up</button>
+      <p class="btn-hint" id="btnHint">Complete the CAPTCHA above to continue</p>
+    </div>
+
+    <!-- Success state -->
+    <div class="success-msg" id="successMsg">
+      <div class="checkmark">✅</div>
+      <h2>Account Created!</h2>
+      <p>Welcome to Acme Corp, you're all set.</p>
+    </div>
+  </div>
+
+  <p class="page-footer">
+    CAPTCHA powered by <a href="/" target="_blank">Solved</a>
+  </p>
+</div>
+
+<script>
+  /* ── Demo page logic ── */
+  const submitBtn  = document.getElementById("submitBtn");
+  const btnHint    = document.getElementById("btnHint");
+  const formSec    = document.getElementById("formSection");
+  const successMsg = document.getElementById("successMsg");
+  const captchaMode = document.getElementById("captchaMode");
+  const captchaContainer = document.getElementById("signup-captcha");
+
+  let captchaPassed = false;
+
+  // This global function is called by the widget on success.
+  window.onCaptchaSolved = function onCaptchaSolved(detail) {
+    console.log("✅ CAPTCHA solved!", detail);
+    captchaPassed = true;
+    submitBtn.classList.add("enabled");
+    btnHint.classList.add("hidden");
+  };
+
+  function resetCaptchaState() {
+    captchaPassed = false;
+    submitBtn.classList.remove("enabled");
+    btnHint.classList.remove("hidden");
+  }
+
+  function mountCaptchaWidget(mode) {
+    resetCaptchaState();
+    captchaContainer.innerHTML = "";
+
+    const oldScript = document.getElementById("captcha-widget-script");
+    if (oldScript) oldScript.remove();
+
+    const script = document.createElement("script");
+    script.id = "captcha-widget-script";
+    var serviceOrigin = window.CAPTCHA_SERVICE_ORIGIN || window.location.origin;
+    script.src = serviceOrigin + "/static/captcha-widget.js?mode=" + encodeURIComponent(mode) + "&t=" + Date.now();
+    script.setAttribute("data-captcha-container", "signup-captcha");
+    script.setAttribute("data-on-success", "onCaptchaSolved");
+    script.setAttribute("data-captcha-type", mode);
+    document.body.appendChild(script);
+  }
+
+  captchaMode.addEventListener("change", () => {
+    mountCaptchaWidget(captchaMode.value);
+  });
+
+  mountCaptchaWidget(captchaMode.value);
+
+  submitBtn.addEventListener("click", () => {
+    if (!captchaPassed) return;
+    // Simulate form submission.
+    formSec.style.display = "none";
+    successMsg.classList.add("visible");
+  });
+</script>
+
+</body>
+</html>
