@@ -1,5 +1,6 @@
----
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/Andrew777Qexo/public_html/
-    - /bin/cp -R * $DEPLOYPATH
+    - export DEPLOY_LOG=~/logs/deploy.log
+    - /bin/cp -r ~/repository/* ~/public_html/
+    - cd ~/public_html
+    - python3 -m pip install -r requirements.txt --user
